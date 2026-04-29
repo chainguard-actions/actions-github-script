@@ -1,6 +1,12 @@
 # actions/github-script
 
-Hardened GitHub Action by [Chainguard](https://www.chainguard.dev).
+Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/actions/github-script](https://github.com/actions/github-script).
+
+## Versions
+
+| Version | Tag | Upstream commit |
+|---------|-----|-----------------|
+| v8 | [`v8`](https://github.com/chainguard-actions/github-script/tree/v8) | — |
 
 ## Privacy
 
