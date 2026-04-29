@@ -1,5 +1,6 @@
 {
   "owner": "actions",
   "name": "github-script",
-  "visibility": ""
+  "visibility": "internal",
+  "description": "Write workflows scripting the GitHub API in JavaScript"
 }

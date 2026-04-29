@@ -1,5 +1,7 @@
 # actions/github-script
 
+Write workflows scripting the GitHub API in JavaScript
+
 Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/actions/github-script](https://github.com/actions/github-script).
 
 ## Versions
