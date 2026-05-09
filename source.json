@@ -1,4 +1,6 @@
 {
-  "upstream": "actions/github-script",
-  "version": "v8"
+  "owner": "actions",
+  "repo": "github-script",
+  "version": "",
+  "url": "https://github.com/actions/github-script"
 }

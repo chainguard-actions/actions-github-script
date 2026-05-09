@@ -2,5 +2,6 @@
   "owner": "actions",
   "name": "github-script",
   "visibility": "internal",
-  "description": "Write workflows scripting the GitHub API in JavaScript"
+  "description": "Write workflows scripting the GitHub API in JavaScript",
+  "block_publish": false
 }
