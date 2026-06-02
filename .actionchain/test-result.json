@@ -1,0 +1,7 @@
+{
+  "ran": true,
+  "passed": true,
+  "output": "\n\u003e @actions/github-script@9.0.0 test\n\u003e jest\n\nPASS __test__/getoctokit-integration.test.ts (7.976 s)\nPASS __test__/async-function.test.ts (8.49 s)\nPASS __test__/get-retry-options.test.ts\n::debug::GitHub client configured with: (retries: 1, retry-exempt-status-code: 400,500,502)\n::debug::GitHub client configured with: (retries: 1, retry-exempt-status-code: 400,500,502)\n::debug::GitHub client configured with: (retries: 1, retry-exempt-status-code: octokit default: [400, 401, 403, 404, 422])\n::debug::GitHub client configured with: (retries: 1, retry-exempt-status-code: octokit default: [400, 401, 403, 404, 422])\nPASS __test__/create-configured-getoctokit.test.ts (8.923 s)\n\nTest Suites: 4 passed, 4 total\nTests:       35 passed, 35 total\nSnapshots:   0 total\nTime:        9.462 s\nRan all test suites.\n",
+  "duration_ms": 10396,
+  "exit_code": 0
+}
