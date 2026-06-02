@@ -11,8 +11,8 @@ jobs:
         with:
           script: |
             return 'base-url-ok'
-          result-encoding: string
           base-url: "https://api.github.com"
+          result-encoding: string
       - name: Assert result output
         env:
           ACTUAL: ${{ steps.action.outputs.result }}

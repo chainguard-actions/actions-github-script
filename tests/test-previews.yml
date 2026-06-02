@@ -11,8 +11,8 @@ jobs:
         with:
           script: |
             return 42
-          result-encoding: string
           previews: "ant-man,shadow-cat"
+          result-encoding: json
       - name: Assert result output
         env:
           ACTUAL: ${{ steps.action.outputs.result }}
