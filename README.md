@@ -9,6 +9,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
 | v8 | [`v8`](https://github.com/chainguard-actions/actions-github-script/tree/v8) | — |
+| v9.0.0 | [`v9.0.0`](https://github.com/chainguard-actions/actions-github-script/tree/v9.0.0) | [`3a2844b`](https://github.com/actions/github-script/commit/3a2844b7e9c422d3c10d287c895573f7108da1b3) |
 
 ## Privacy
 
