@@ -1,4 +1,4 @@
-name: Test basic script execution
+name: Test basic script usage
 on:
   workflow_dispatch:
 jobs:
@@ -9,7 +9,8 @@ jobs:
       - id: action
         uses: .
         with:
-          script: return 'hello-world'
+          script: |
+            return 'hello-world'
           result-encoding: string
       - name: Assert result output
         env:

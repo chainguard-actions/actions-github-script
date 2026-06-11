@@ -1,4 +1,4 @@
-name: Test script with base-url input
+name: Test base-url input
 on:
   workflow_dispatch:
 jobs:
@@ -9,16 +9,17 @@ jobs:
       - id: action
         uses: .
         with:
-          script: return 'custom-base-url-test'
-          base-url: https://api.github.com
+          script: |
+            return 'base-url-test'
+          base-url: "https://api.github.com"
           result-encoding: string
       - name: Assert result output
         env:
           ACTUAL: ${{ steps.action.outputs.result }}
         run: |
           echo "actual: $ACTUAL"
-          if [ "$ACTUAL" != "custom-base-url-test" ]; then
-            echo "FAIL: expected 'custom-base-url-test', got '$ACTUAL'"
+          if [ "$ACTUAL" != "base-url-test" ]; then
+            echo "FAIL: expected 'base-url-test', got '$ACTUAL'"
             exit 1
           fi
           echo "PASS"

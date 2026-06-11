@@ -1,4 +1,4 @@
-name: Test script with previews input
+name: Test previews input
 on:
   workflow_dispatch:
 jobs:
@@ -9,8 +9,9 @@ jobs:
       - id: action
         uses: .
         with:
-          script: return 42
-          previews: ant-man,shadow-cat
+          script: |
+            return 42
+          previews: "ant-man,flash"
           result-encoding: string
       - name: Assert result output
         env:
