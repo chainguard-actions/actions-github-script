@@ -1,4 +1,4 @@
-name: Test base-url input
+name: Test script with base-url
 on:
   workflow_dispatch:
 jobs:
@@ -9,9 +9,8 @@ jobs:
       - id: action
         uses: .
         with:
-          script: |
-            return 'base-url-ok'
-          base-url: "https://api.github.com"
+          script: return "base-url-ok"
+          base-url: https://api.github.com
           result-encoding: string
       - name: Assert result output
         env:
