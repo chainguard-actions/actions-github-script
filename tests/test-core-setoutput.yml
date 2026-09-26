@@ -1,0 +1,27 @@
+name: Test core.setOutput within script
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          result-encoding: string
+          script: |
+            // Use core.setOutput to set a named output
+            core.setOutput('custom-key', 'custom-value');
+            // Also return a value via the result output
+            return 'done'
+      - name: Assert result output
+        env:
+          RESULT: ${{ steps.action.outputs.result }}
+        run: |
+          echo "result: $RESULT"
+          if [ "$RESULT" != "done" ]; then
+            echo "FAIL: expected result='done', got '$RESULT'"
+            exit 1
+          fi
+          echo "PASS"
