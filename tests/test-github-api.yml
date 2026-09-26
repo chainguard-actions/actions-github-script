@@ -1,0 +1,29 @@
+name: Test github API client usage
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          script: |
+            const { data } = await github.rest.rateLimit.get();
+            return data.rate.limit;
+          result-encoding: json
+      - name: Assert rate limit is a positive number
+        env:
+          ACTUAL: ${{ steps.action.outputs.result }}
+        run: |
+          echo "actual: $ACTUAL"
+          if ! echo "$ACTUAL" | grep -qE '^[0-9]+$'; then
+            echo "FAIL: expected a numeric rate limit but got '$ACTUAL'"
+            exit 1
+          fi
+          if [ "$ACTUAL" -le 0 ]; then
+            echo "FAIL: expected rate limit > 0 but got '$ACTUAL'"
+            exit 1
+          fi
+          echo "PASS: rate limit is $ACTUAL"

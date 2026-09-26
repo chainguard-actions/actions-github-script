@@ -1,0 +1,33 @@
+name: Test JSON object result encoding
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          script: |
+            return { foo: "bar", count: 3 }
+          result-encoding: json
+      - name: Assert output is JSON object
+        env:
+          ACTUAL: ${{ steps.action.outputs.result }}
+        run: |
+          echo "actual: $ACTUAL"
+          # Check it contains expected keys/values
+          if ! echo "$ACTUAL" | grep -q '"foo"'; then
+            echo "FAIL: expected JSON to contain 'foo' key"
+            exit 1
+          fi
+          if ! echo "$ACTUAL" | grep -q '"bar"'; then
+            echo "FAIL: expected JSON to contain 'bar' value"
+            exit 1
+          fi
+          if ! echo "$ACTUAL" | grep -q '3'; then
+            echo "FAIL: expected JSON to contain count 3"
+            exit 1
+          fi
+          echo "PASS"
