@@ -1,0 +1,62 @@
+name: Test JSON primitive output
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: number
+        uses: .
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            return 12345
+          result-encoding: json
+      - name: Assert numeric JSON output
+        env:
+          RESULT: ${{ steps.number.outputs.result }}
+        run: |
+          echo "result: $RESULT"
+          if [ "$RESULT" = "12345" ]; then
+            echo "PASS: numeric result matches"
+          else
+            echo "FAIL: expected '12345', got: $RESULT"
+            exit 1
+          fi
+      - id: boolean
+        uses: .
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            return true
+          result-encoding: json
+      - name: Assert boolean JSON output
+        env:
+          RESULT: ${{ steps.boolean.outputs.result }}
+        run: |
+          echo "result: $RESULT"
+          if [ "$RESULT" = "true" ]; then
+            echo "PASS: boolean result matches"
+          else
+            echo "FAIL: expected 'true', got: $RESULT"
+            exit 1
+          fi
+      - id: array
+        uses: .
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            return [1, 2, 3]
+          result-encoding: json
+      - name: Assert array JSON output
+        env:
+          RESULT: ${{ steps.array.outputs.result }}
+        run: |
+          echo "result: $RESULT"
+          if echo "$RESULT" | grep -q '1' && echo "$RESULT" | grep -q '2' && echo "$RESULT" | grep -q '3'; then
+            echo "PASS: array result contains expected elements"
+          else
+            echo "FAIL: expected array [1,2,3], got: $RESULT"
+            exit 1
+          fi

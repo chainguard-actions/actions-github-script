@@ -1,0 +1,30 @@
+name: Test environment variables in script
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        env:
+          MY_CUSTOM_VAR: "test-value-123"
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const val = process.env.MY_CUSTOM_VAR;
+            core.info(`MY_CUSTOM_VAR = ${val}`);
+            return val
+          result-encoding: string
+      - name: Assert env var is accessible in script
+        env:
+          RESULT: ${{ steps.action.outputs.result }}
+        run: |
+          echo "result: $RESULT"
+          if [ "$RESULT" = "test-value-123" ]; then
+            echo "PASS: env var accessible in script"
+          else
+            echo "FAIL: expected 'test-value-123', got: $RESULT"
+            exit 1
+          fi

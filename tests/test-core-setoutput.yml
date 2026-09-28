@@ -1,0 +1,28 @@
+name: Test core.setOutput in script
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            core.setOutput("my-output", "set-via-core");
+            core.info("Output was set via core.setOutput");
+      - name: Assert output set via core.setOutput
+        env:
+          RESULT: ${{ steps.action.outputs.result }}
+          MY_OUTPUT: ${{ steps.action.outputs.my-output }}
+        run: |
+          echo "result: $RESULT"
+          echo "my-output: $MY_OUTPUT"
+          if [ "$MY_OUTPUT" = "set-via-core" ]; then
+            echo "PASS: core.setOutput worked correctly"
+          else
+            echo "FAIL: expected 'set-via-core', got: $MY_OUTPUT"
+            exit 1
+          fi

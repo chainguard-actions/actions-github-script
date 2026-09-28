@@ -1,0 +1,39 @@
+name: Test basic JSON output
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            return { hello: "world", count: 42 }
+          result-encoding: json
+      - name: Assert JSON output
+        env:
+          RESULT: ${{ steps.action.outputs.result }}
+        run: |
+          echo "result: $RESULT"
+          # Should be a JSON string containing the object
+          if echo "$RESULT" | grep -q '"hello"'; then
+            echo "PASS: result contains expected key 'hello'"
+          else
+            echo "FAIL: expected result to contain 'hello', got: $RESULT"
+            exit 1
+          fi
+          if echo "$RESULT" | grep -q '"world"'; then
+            echo "PASS: result contains expected value 'world'"
+          else
+            echo "FAIL: expected result to contain 'world', got: $RESULT"
+            exit 1
+          fi
+          if echo "$RESULT" | grep -q '42'; then
+            echo "PASS: result contains expected number 42"
+          else
+            echo "FAIL: expected result to contain 42, got: $RESULT"
+            exit 1
+          fi

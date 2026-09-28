@@ -1,0 +1,39 @@
+name: Test core and context objects
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            // Test that core and context are available
+            core.info("Running github-script test");
+            const eventName = context.eventName;
+            const repo = context.repo;
+            core.info(`Event: ${eventName}`);
+            core.info(`Repo owner: ${repo.owner}`);
+            return { eventName, owner: repo.owner }
+          result-encoding: json
+      - name: Assert context is accessible
+        env:
+          RESULT: ${{ steps.action.outputs.result }}
+        run: |
+          echo "result: $RESULT"
+          # eventName should be workflow_dispatch under act
+          if echo "$RESULT" | grep -q '"eventName"'; then
+            echo "PASS: result contains eventName"
+          else
+            echo "FAIL: expected result to contain eventName, got: $RESULT"
+            exit 1
+          fi
+          if echo "$RESULT" | grep -q '"owner"'; then
+            echo "PASS: result contains owner"
+          else
+            echo "FAIL: expected result to contain owner, got: $RESULT"
+            exit 1
+          fi

@@ -1,0 +1,28 @@
+name: Test custom user-agent
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          github-token: ${{ github.token }}
+          user-agent: "my-custom-agent/1.0"
+          script: |
+            // Verify the script runs fine with a custom user-agent
+            return "custom-agent-ok"
+          result-encoding: string
+      - name: Assert script ran with custom user-agent
+        env:
+          RESULT: ${{ steps.action.outputs.result }}
+        run: |
+          echo "result: $RESULT"
+          if [ "$RESULT" = "custom-agent-ok" ]; then
+            echo "PASS: script ran successfully with custom user-agent"
+          else
+            echo "FAIL: expected 'custom-agent-ok', got: $RESULT"
+            exit 1
+          fi

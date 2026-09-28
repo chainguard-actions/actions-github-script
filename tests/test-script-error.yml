@@ -1,0 +1,26 @@
+name: Test script error handling
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            throw new Error("intentional test error");
+      - name: Assert step failed due to thrown error
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: step correctly failed when script threw an error"
+          else
+            echo "FAIL: expected step to fail, but outcome was: $OUTCOME"
+            exit 1
+          fi
