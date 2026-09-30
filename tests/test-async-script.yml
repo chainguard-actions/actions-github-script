@@ -1,0 +1,26 @@
+name: Test async script execution
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          script: |
+            // Test that async/await works in the script environment
+            const result = await Promise.resolve('async-result');
+            return result;
+          result-encoding: string
+      - name: Assert async result
+        env:
+          ACTUAL: ${{ steps.action.outputs.result }}
+        run: |
+          echo "actual: $ACTUAL"
+          if [ "$ACTUAL" != "async-result" ]; then
+            echo "FAIL: expected 'async-result' but got '$ACTUAL'"
+            exit 1
+          fi
+          echo "PASS"

@@ -1,0 +1,28 @@
+name: Test array result with default JSON encoding
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          script: |
+            return ['apple', 'banana', 'cherry']
+      - name: Assert array result is JSON encoded
+        env:
+          ACTUAL: ${{ steps.action.outputs.result }}
+        run: |
+          echo "actual: $ACTUAL"
+          # Parse JSON array and check elements
+          FIRST=$(echo "$ACTUAL" | python3 -c "import sys, json; arr=json.load(sys.stdin); print(arr[0])")
+          SECOND=$(echo "$ACTUAL" | python3 -c "import sys, json; arr=json.load(sys.stdin); print(arr[1])")
+          THIRD=$(echo "$ACTUAL" | python3 -c "import sys, json; arr=json.load(sys.stdin); print(arr[2])")
+          echo "first: $FIRST, second: $SECOND, third: $THIRD"
+          if [ "$FIRST" != "apple" ] || [ "$SECOND" != "banana" ] || [ "$THIRD" != "cherry" ]; then
+            echo "FAIL: unexpected array contents"
+            exit 1
+          fi
+          echo "PASS"
