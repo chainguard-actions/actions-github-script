@@ -1,0 +1,28 @@
+name: Test core functions in script
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          script: |
+            core.info("This is an info message");
+            core.warning("This is a warning");
+            const sum = 2 + 2;
+            core.info(`Sum is ${sum}`);
+            return sum;
+          result-encoding: json
+      - name: Assert sum output
+        env:
+          ACTUAL: ${{ steps.action.outputs.result }}
+        run: |
+          echo "actual: $ACTUAL"
+          if [ "$ACTUAL" != "4" ]; then
+            echo "FAIL: expected '4' but got '$ACTUAL'"
+            exit 1
+          fi
+          echo "PASS"
