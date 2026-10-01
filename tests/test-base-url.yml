@@ -9,17 +9,17 @@ jobs:
       - id: action
         uses: .
         with:
-          base-url: https://api.github.com
-          script: |
-            return "base-url-ok"
+          base-url: "https://api.github.com"
           result-encoding: string
+          script: |
+            return 'base-url-ok'
       - name: Assert result
         env:
-          RESULT: ${{ steps.action.outputs.result }}
+          ACTUAL: ${{ steps.action.outputs.result }}
         run: |
-          echo "result: $RESULT"
-          if [ "$RESULT" != "base-url-ok" ]; then
-            echo "FAIL: expected 'base-url-ok', got '$RESULT'"
+          echo "actual: $ACTUAL"
+          if [ "$ACTUAL" != "base-url-ok" ]; then
+            echo "FAIL: expected 'base-url-ok' but got '$ACTUAL'"
             exit 1
           fi
           echo "PASS"
