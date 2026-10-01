@@ -10,16 +10,16 @@ jobs:
         uses: .
         with:
           previews: "ant-man-preview,shadow-cat-preview"
-          result-encoding: string
           script: |
-            return 'previews-ok'
+            return "previews-accepted"
+          result-encoding: string
       - name: Assert result
         env:
           ACTUAL: ${{ steps.action.outputs.result }}
         run: |
           echo "actual: $ACTUAL"
-          if [ "$ACTUAL" != "previews-ok" ]; then
-            echo "FAIL: expected 'previews-ok' but got '$ACTUAL'"
+          if [ "$ACTUAL" != "previews-accepted" ]; then
+            echo "FAIL: expected 'previews-accepted' but got '$ACTUAL'"
             exit 1
           fi
           echo "PASS"
