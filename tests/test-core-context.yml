@@ -1,0 +1,27 @@
+name: Test core and context objects available in script
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          script: |
+            core.info("Running github-script test");
+            const eventName = context.eventName;
+            core.info(`Event name: ${eventName}`);
+            return eventName
+          result-encoding: string
+      - name: Assert event name is returned
+        env:
+          ACTUAL: ${{ steps.action.outputs.result }}
+        run: |
+          echo "actual: $ACTUAL"
+          if [ -z "$ACTUAL" ]; then
+            echo "FAIL: expected a non-empty event name"
+            exit 1
+          fi
+          echo "PASS: got event name '$ACTUAL'"

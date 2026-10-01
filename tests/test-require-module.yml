@@ -1,4 +1,4 @@
-name: Test base-url input
+name: Test require of Node.js built-in module in script
 on:
   workflow_dispatch:
 jobs:
@@ -9,17 +9,19 @@ jobs:
       - id: action
         uses: .
         with:
-          base-url: "https://api.github.com"
-          result-encoding: string
           script: |
-            return 'base-url-ok'
-      - name: Assert result
+            const os = require('os');
+            const platform = os.platform();
+            core.info(`Platform: ${platform}`);
+            return platform
+          result-encoding: string
+      - name: Assert platform is linux
         env:
           ACTUAL: ${{ steps.action.outputs.result }}
         run: |
           echo "actual: $ACTUAL"
-          if [ "$ACTUAL" != "base-url-ok" ]; then
-            echo "FAIL: expected 'base-url-ok' but got '$ACTUAL'"
+          if [ "$ACTUAL" != "linux" ]; then
+            echo "FAIL: expected 'linux' but got '$ACTUAL'"
             exit 1
           fi
           echo "PASS"

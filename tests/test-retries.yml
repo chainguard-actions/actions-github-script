@@ -1,4 +1,4 @@
-name: Test base-url input
+name: Test retries input accepted
 on:
   workflow_dispatch:
 jobs:
@@ -9,17 +9,17 @@ jobs:
       - id: action
         uses: .
         with:
-          base-url: "https://api.github.com"
+          script: return "ok"
           result-encoding: string
-          script: |
-            return 'base-url-ok'
-      - name: Assert result
+          retries: "3"
+          retry-exempt-status-codes: "400,401,403,404,422"
+      - name: Assert result is ok
         env:
           ACTUAL: ${{ steps.action.outputs.result }}
         run: |
           echo "actual: $ACTUAL"
-          if [ "$ACTUAL" != "base-url-ok" ]; then
-            echo "FAIL: expected 'base-url-ok' but got '$ACTUAL'"
+          if [ "$ACTUAL" != "ok" ]; then
+            echo "FAIL: expected 'ok' but got '$ACTUAL'"
             exit 1
           fi
           echo "PASS"
