@@ -1,0 +1,36 @@
+name: Test github context access
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          script: |
+            const eventName = context.eventName;
+            const ref = context.ref;
+            core.info(`eventName: ${eventName}`);
+            core.info(`ref: ${ref}`);
+            return JSON.stringify({ eventName, ref });
+          result-encoding: string
+      - name: Assert github context fields are present
+        env:
+          ACTUAL: ${{ steps.action.outputs.result }}
+        run: |
+          echo "actual: $ACTUAL"
+          EVENT=$(echo "$ACTUAL" | jq -r '.eventName')
+          REF=$(echo "$ACTUAL" | jq -r '.ref')
+          echo "eventName: $EVENT"
+          echo "ref: $REF"
+          if [ -z "$EVENT" ]; then
+            echo "FAIL: eventName is empty"
+            exit 1
+          fi
+          if [ -z "$REF" ]; then
+            echo "FAIL: ref is empty"
+            exit 1
+          fi
+          echo "PASS: eventName=$EVENT ref=$REF"

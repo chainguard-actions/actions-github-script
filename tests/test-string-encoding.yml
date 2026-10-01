@@ -1,4 +1,4 @@
-name: Test previews input
+name: Test string result encoding
 on:
   workflow_dispatch:
 jobs:
@@ -9,17 +9,16 @@ jobs:
       - id: action
         uses: .
         with:
-          previews: ant-man,shadow-cat
           script: |
-            return 'previews-test-passed'
+            return "hello world";
           result-encoding: string
-      - name: Assert result
+      - name: Assert result is hello world
         env:
           ACTUAL: ${{ steps.action.outputs.result }}
         run: |
           echo "actual: $ACTUAL"
-          if [ "$ACTUAL" != "previews-test-passed" ]; then
-            echo "FAIL: expected 'previews-test-passed', got '$ACTUAL'"
+          if [ "$ACTUAL" != "hello world" ]; then
+            echo "FAIL: expected 'hello world' but got '$ACTUAL'"
             exit 1
           fi
           echo "PASS"

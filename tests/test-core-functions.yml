@@ -1,4 +1,4 @@
-name: Test basic script usage
+name: Test core functions in script
 on:
   workflow_dispatch:
 jobs:
@@ -10,15 +10,18 @@ jobs:
         uses: .
         with:
           script: |
-            return 'hello-world'
+            core.info("Running test script");
+            const value = "test-value";
+            core.setOutput("custom", value);
+            return value;
           result-encoding: string
-      - name: Assert result output
+      - name: Assert result from core functions
         env:
           ACTUAL: ${{ steps.action.outputs.result }}
         run: |
           echo "actual: $ACTUAL"
-          if [ "$ACTUAL" != "hello-world" ]; then
-            echo "FAIL: expected 'hello-world', got '$ACTUAL'"
+          if [ "$ACTUAL" != "test-value" ]; then
+            echo "FAIL: expected 'test-value' but got '$ACTUAL'"
             exit 1
           fi
           echo "PASS"
