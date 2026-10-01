@@ -9,9 +9,10 @@ jobs:
       - id: action
         uses: .
         with:
+          github-token: ${{ github.token }}
           base-url: https://api.github.com
           script: |
-            return 'base-url-ok'
+            return "base-url-ok"
           result-encoding: string
       - name: Assert result
         env:
@@ -19,7 +20,7 @@ jobs:
         run: |
           echo "actual: $ACTUAL"
           if [ "$ACTUAL" != "base-url-ok" ]; then
-            echo "FAIL: expected 'base-url-ok', got '$ACTUAL'"
+            echo "FAIL: expected 'base-url-ok' but got '$ACTUAL'"
             exit 1
           fi
           echo "PASS"

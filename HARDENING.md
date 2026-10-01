@@ -10,5 +10,15 @@
 
 **Harden Agent Version:** `2`
 
-Action **actions--github-script/v7.1.0** was hardened automatically. 0 finding(s) were identified and resolved across 0 iteration(s).
+Action **actions--github-script/v7.1.0** was hardened automatically. 0 finding(s) were identified and resolved across 1 iteration(s).
+
+## Iteration Notes
+
+### Iteration 1
+
+**Fixes applied:** unpinned-uses
+
+**Notes:**
+
+Pinned 'actions/setup-node@v4' to full commit SHA '49933ea5288caeca8642d1e84afbd3f7d6820020' in hardened/action/.github/actions/install-dependencies/action.yml, preserving the tag as a comment (# v4) for readability.
 
